@@ -1,7 +1,10 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { NextRequest, NextResponse } from "next/server";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const client = new OpenAI({
+  baseURL: "https://api.deepseek.com",
+  apiKey:  process.env.DEEPSEEK_API_KEY,
+});
 
 const SYSTEM = `You are a certified nutritionist and culinary expert specialising in anti-inflammatory diets.
 Your meal plans are practical, delicious, culturally diverse, and backed by nutritional science.
@@ -48,14 +51,16 @@ Return ONLY valid JSON in exactly this structure:
 Generate all 7 days (Monday through Sunday).`;
 
   try {
-    const message = await client.messages.create({
-      model:      "claude-sonnet-4-6",
+    const response = await client.chat.completions.create({
+      model:      "deepseek-chat",
       max_tokens: 4096,
-      system:     SYSTEM,
-      messages:   [{ role: "user", content: prompt }],
+      messages: [
+        { role: "system", content: SYSTEM },
+        { role: "user",   content: prompt },
+      ],
     });
 
-    const raw  = (message.content[0] as { text: string }).text.trim();
+    const raw  = response.choices[0].message.content?.trim() || "";
     const plan = JSON.parse(raw);
     return NextResponse.json(plan);
   } catch (err) {
