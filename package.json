@@ -1,18 +1,18 @@
 {
-  "name": "trend-spotter-backend",
+  "name": "healthiness365-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Trend Spotter API for healthiness365.com — US-based social media trend tracking",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "healthiness365.com",
+  "license": "MIT",
   "dependencies": {
-    "axios": "^1.16.1",
-    "cheerio": "^1.2.0",
-    "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "axios": "^1.9.0",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
   }
 }
