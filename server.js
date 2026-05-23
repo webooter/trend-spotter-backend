@@ -230,6 +230,21 @@ async function getSpoonacularRecipes(niche) {
   }
 }
 
+// ─── Spoonacular key test ─────────────────────────────────────────
+app.get("/api/test-spoonacular", async (req, res) => {
+  const API_KEY = process.env.SPOONACULAR_API_KEY;
+  if (!API_KEY) return res.json({ error: "No key set" });
+
+  try {
+    const r = await axios.get("https://api.spoonacular.com/recipes/complexSearch", {
+      params: { query: "chicken", number: 1, apiKey: API_KEY },
+    });
+    res.json({ status: r.status, totalResults: r.data.totalResults, keyLength: API_KEY.length });
+  } catch (err) {
+    res.json({ error: err.message, response: err.response?.data });
+  }
+});
+
 // ─── Real recipes endpoint ────────────────────────────────────────
 app.get("/api/recipes", async (req, res) => {
   const niche = req.query.niche || "gut health";
