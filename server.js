@@ -220,30 +220,11 @@ async function getSpoonacularRecipes(niche) {
       diets: r.diets || [],
     }));
 
-    return {
-      source: "spoonacular",
-      data: recipes,
-      _debug: { searchedFor: foodQueryFor(niche), totalResults: res.data.totalResults, status: res.status, offset: res.data.offset },
-    };
+    return { source: "spoonacular", data: recipes };
   } catch (err) {
     return { source: "spoonacular", error: err.message, data: [] };
   }
 }
-
-// ─── Spoonacular key test ─────────────────────────────────────────
-app.get("/api/test-spoonacular", async (req, res) => {
-  const API_KEY = process.env.SPOONACULAR_API_KEY;
-  if (!API_KEY) return res.json({ error: "No key set" });
-
-  try {
-    const r = await axios.get("https://api.spoonacular.com/recipes/complexSearch", {
-      params: { query: "chicken", number: 1, apiKey: API_KEY },
-    });
-    res.json({ status: r.status, totalResults: r.data.totalResults, keyLength: API_KEY.length });
-  } catch (err) {
-    res.json({ error: err.message, response: err.response?.data });
-  }
-});
 
 // ─── Real recipes endpoint ────────────────────────────────────────
 app.get("/api/recipes", async (req, res) => {
