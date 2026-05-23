@@ -48,13 +48,15 @@ async function getYouTubeTrends(niche) {
     const searchRes = await axios.get("https://www.googleapis.com/youtube/v3/search", {
       params: {
         part: "snippet",
-        q: `${niche} recipe`,
+        q: `${niche} recipe american western`,
         type: "video",
-        videoDuration: "short",       // Shorts only
+        videoDuration: "short",
         order: "viewCount",
-        publishedAfter: getDateDaysAgo(30), // Last 30 days
+        publishedAfter: getDateDaysAgo(30),
         regionCode: "US",
         relevanceLanguage: "en",
+        location: "37.09024,-95.712891",
+        locationRadius: "3000km",
         maxResults: 10,
         key: API_KEY,
       },
@@ -95,7 +97,7 @@ async function getYouTubeTrends(niche) {
 // ─── Reddit trends ────────────────────────────────────────────────
 // Free Reddit JSON API — no key needed
 async function getRedditTrends(niche) {
-  const subreddits = ["recipes", "GutHealth", "MealPrepSunday", "HealthyFood", "Cooking"];
+  const subreddits = ["HealthyFood", "MealPrepSunday", "AntiInflammatory", "Cooking", "EatCheapAndHealthy"];
   const results = [];
 
   for (const sub of subreddits.slice(0, 3)) {

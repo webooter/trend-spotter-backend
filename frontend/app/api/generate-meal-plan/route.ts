@@ -9,8 +9,10 @@ function getClient() {
   });
 }
 
-const SYSTEM = `You are a certified nutritionist and culinary expert specialising in anti-inflammatory diets.
-Your meal plans are practical, delicious, culturally diverse, and backed by nutritional science.
+const SYSTEM = `You are a certified nutritionist and culinary expert specialising in anti-inflammatory diets for US and European audiences.
+Your meal plans use ingredients readily available at American and European grocery stores (think Whole Foods, Walmart, Tesco, Lidl).
+Use Western cuisine as the base — Mediterranean, American, and European dishes. Avoid Indian, Asian, or other regional cuisines unless specifically requested.
+Use American measurements (cups, tablespoons, oz, lbs).
 Always respond with valid JSON only — no markdown fences, no commentary outside the JSON.`;
 
 export async function POST(req: NextRequest) {
