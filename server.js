@@ -27,7 +27,8 @@ app.get("/", (req, res) => {
     domain: BRAND.domain,
     region: "US West (Railway)",
     endpoints: {
-      trends: "/api/trends?niche=gut+health&sources=youtube,reddit,tiktok",
+      trends:  "/api/trends?niche=gut+health&sources=youtube,reddit",
+      recipes: "/api/recipes?niche=gut+health",
     },
   });
 });
@@ -170,6 +171,60 @@ async function getTikTokTrends(niche) {
     return { source: "tiktok", error: "TikTok blocked request (expected)", data: [] };
   }
 }
+
+// ─── Spoonacular real recipes ─────────────────────────────────────
+async function getSpoonacularRecipes(niche) {
+  const API_KEY = process.env.SPOONACULAR_API_KEY;
+
+  if (!API_KEY) {
+    return { source: "spoonacular", error: "No SPOONACULAR_API_KEY set", data: [] };
+  }
+
+  try {
+    const res = await axios.get("https://api.spoonacular.com/recipes/complexSearch", {
+      params: {
+        query: niche,
+        number: 6,
+        addRecipeInformation: true,
+        sort: "popularity",
+        apiKey: API_KEY,
+      },
+    });
+
+    const recipes = (res.data.results || []).map(r => ({
+      id: r.id,
+      title: r.title,
+      image: r.image,
+      readyInMinutes: r.readyInMinutes,
+      servings: r.servings,
+      sourceUrl: r.sourceUrl,
+      sourceName: r.sourceName,
+      summary: r.summary ? r.summary.replace(/<[^>]*>/g, "").slice(0, 250) + "…" : "",
+      diets: r.diets || [],
+    }));
+
+    return { source: "spoonacular", data: recipes };
+  } catch (err) {
+    return { source: "spoonacular", error: err.message, data: [] };
+  }
+}
+
+// ─── Real recipes endpoint ────────────────────────────────────────
+app.get("/api/recipes", async (req, res) => {
+  const niche = req.query.niche || "gut health";
+
+  try {
+    const result = await getSpoonacularRecipes(niche);
+    res.json({
+      niche,
+      ...result,
+      fetchedAt: new Date().toISOString(),
+      brand: BRAND.name,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // ─── Main trends endpoint ─────────────────────────────────────────
 app.get("/api/trends", async (req, res) => {
