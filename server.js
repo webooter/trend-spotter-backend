@@ -15,7 +15,9 @@ const BRAND = {
 app.use(cors());
 app.use(express.json());
 
-// ─── Health check ────────────────────────────────────────────────
+// ─── Health / root ───────────────────────────────────────────────
+app.get("/health", (req, res) => res.json({ status: "ok" }));
+
 app.get("/", (req, res) => {
   res.json({
     status: "ok",
