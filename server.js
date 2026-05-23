@@ -5,12 +5,29 @@ const axios = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const BRAND = {
+  name: "Healthiness365",
+  domain: "healthiness365.com",
+  api: "Healthiness365 Trend API",
+  version: "1.0.0",
+};
+
 app.use(cors());
 app.use(express.json());
 
 // ─── Health check ────────────────────────────────────────────────
 app.get("/", (req, res) => {
-  res.json({ status: "ok", message: "Trend Spotter API running", region: "US" });
+  res.json({
+    status: "ok",
+    brand: BRAND.name,
+    api: BRAND.api,
+    version: BRAND.version,
+    domain: BRAND.domain,
+    region: "US West (Railway)",
+    endpoints: {
+      trends: "/api/trends?niche=gut+health&sources=youtube,reddit,tiktok",
+    },
+  });
 });
 
 // ─── YouTube Shorts trends ────────────────────────────────────────
@@ -179,7 +196,8 @@ app.get("/api/trends", async (req, res) => {
       results: data,
       topTitles: allTitles.slice(0, 10),
       fetchedAt: new Date().toISOString(),
-      serverRegion: "US (Railway)",
+      brand: BRAND.name,
+      serverRegion: "US West (Railway)",
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -194,5 +212,6 @@ function getDateDaysAgo(days) {
 }
 
 app.listen(PORT, () => {
-  console.log(`✅ Trend Spotter API running on port ${PORT}`);
+  console.log(`✅ ${BRAND.api} v${BRAND.version} running on port ${PORT}`);
+  console.log(`   Domain: ${BRAND.domain}`);
 });
