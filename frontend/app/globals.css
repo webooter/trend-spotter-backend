@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gradient-start: #059669;
+  --gradient-end:   #0d9488;
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { @apply bg-white text-slate-900 antialiased; }
+}
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent;
+  }
+  .gradient-text-dark {
+    @apply bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent;
+  }
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  .glass-dark {
+    @apply bg-slate-900/60 backdrop-blur-md border border-slate-700/50;
+  }
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+  .btn-primary {
+    @apply bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400
+           text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-emerald-500/25
+           transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/40
+           hover:-translate-y-0.5 active:translate-y-0;
+  }
+  .btn-secondary {
+    @apply border-2 border-emerald-500 text-emerald-600 font-bold px-8 py-4 rounded-2xl
+           hover:bg-emerald-50 transition-all duration-300;
+  }
+}
+
+/* Animated hero background */
+.hero-bg {
+  background: linear-gradient(-45deg, #0f172a, #064e3b, #0f172a, #134e4a);
+  background-size: 400% 400%;
+  animation: gradient-x 10s ease infinite;
+}
+
+/* Orb blobs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  animation: float 8s ease-in-out infinite;
+}
+
+/* Step progress */
+.step-active  { @apply bg-emerald-500 text-white; }
+.step-done    { @apply bg-emerald-600 text-white; }
+.step-pending { @apply bg-slate-200 text-slate-400; }
+
+/* Day tabs */
+.day-tab         { @apply px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer; }
+.day-tab-active  { @apply bg-emerald-500 text-white shadow-md; }
+.day-tab-inactive{ @apply text-slate-500 hover:bg-slate-100; }
+
+/* Shopping list */
+.shop-item { @apply flex items-center gap-3 py-2 border-b border-slate-100 last:border-0; }
+
+/* Meal card */
+.meal-card {
+  @apply bg-white rounded-2xl p-5 shadow-sm border border-slate-100
+         hover:shadow-md hover:border-emerald-100 transition-all duration-200;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
