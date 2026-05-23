@@ -204,6 +204,7 @@ async function getSpoonacularRecipes(niche) {
         addRecipeInformation: true,
         sort: "popularity",
         apiKey: API_KEY,
+        instructionsRequired: false,
       },
     });
 
@@ -222,7 +223,7 @@ async function getSpoonacularRecipes(niche) {
     return {
       source: "spoonacular",
       data: recipes,
-      _debug: { searchedFor: foodQueryFor(niche), totalResults: res.data.totalResults, status: res.status },
+      _debug: { searchedFor: foodQueryFor(niche), totalResults: res.data.totalResults, status: res.status, offset: res.data.offset },
     };
   } catch (err) {
     return { source: "spoonacular", error: err.message, data: [] };
